@@ -2,6 +2,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
+#include "playerrect.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,13 +12,16 @@ int main(int argc, char *argv[])
     QGraphicsScene* scene = new QGraphicsScene();
 
     //Create an item to add to the scene
-    QGraphicsRectItem* rectItem  = new QGraphicsRectItem();
+    PlayerRect* player  = new PlayerRect();
 
     //configure item
-    rectItem->setRect(0, 0, 100, 100);
+    player->setRect(0, 0, 100, 100);
 
     //add item to scene
-    scene->addItem(rectItem);
+    scene->addItem(player);
+
+    player->setFlag(QGraphicsItem::ItemIsFocusable);
+    player->setFocus();
 
     //create a view to visualise the scene
     QGraphicsView* view = new QGraphicsView(scene);
