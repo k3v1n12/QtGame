@@ -9,7 +9,7 @@ class Enemy : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    Enemy(QGraphicsScene* mainScene);
+    Enemy();
 
 public slots:
     void move();

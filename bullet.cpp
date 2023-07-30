@@ -3,6 +3,9 @@
 #include <QGraphicsScene>
 #include <QList>
 #include "enemy.h"
+#include "game.h"
+
+extern Game* game;
 
 Bullet::Bullet()
 {
@@ -15,12 +18,19 @@ Bullet::Bullet()
 
 void Bullet::move()
 {
-    //collision of Enemy
+    //collision with Enemy
     QList<QGraphicsItem* > collidingItem = collidingItems();
     for(auto& item: collidingItem) {
         if(typeid(*item) == typeid(Enemy)) {
+
+            //increase player score
+            game->score->increaseScore();
+
+            //delete enemy
             scene()->removeItem(item);
             delete item;
+
+            //delete bullet
             scene()->removeItem(this);
             delete this;
             return;

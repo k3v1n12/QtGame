@@ -2,8 +2,7 @@
 #include <QTimer>
 #include "enemy.h"
 
-Spawn::Spawn(QGraphicsScene* mainScene)
-    :m_mainScene(mainScene)
+Spawn::Spawn()
 {
     QTimer* timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(spawn()));
@@ -15,7 +14,7 @@ Spawn::Spawn(QGraphicsScene* mainScene)
 
 void Spawn::spawn()
 {
-    Enemy* enemy = new Enemy(m_mainScene);
+    Enemy* enemy = new Enemy();
     std::uniform_int_distribution<int> distribution(0, 700);
     int randomNum = distribution(m_randomEngine);
     enemy->setPos(randomNum, 0);

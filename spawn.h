@@ -9,14 +9,13 @@ class Spawn : public QObject
 {
     Q_OBJECT
 public:
-    explicit Spawn(QGraphicsScene* mainScene);
+    explicit Spawn();
 
 public slots:
     void spawn();
 
 private:
     std::mt19937 m_randomEngine;
-    QGraphicsScene* m_mainScene;
 
 };
 
