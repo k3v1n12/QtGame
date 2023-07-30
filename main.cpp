@@ -3,6 +3,7 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
 #include "playerrect.h"
+#include "spawn.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
 
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //spawn Enemy
+    Spawn spawn(scene);
 
     //show view
     view->show();

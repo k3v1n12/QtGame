@@ -25,6 +25,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         playerrect.h playerrect.cpp
         bullet.h bullet.cpp
+        enemy.h enemy.cpp
+        spawn.h spawn.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET QtGame APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
