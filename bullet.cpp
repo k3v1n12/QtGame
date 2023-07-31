@@ -1,5 +1,4 @@
 #include "bullet.h"
-#include <QTimer>
 #include <QGraphicsScene>
 #include <QList>
 #include "enemy.h"
@@ -7,13 +6,17 @@
 
 extern Game* game;
 
-Bullet::Bullet()
+Bullet::Bullet(QGraphicsPixmapItem* parent)
+    : QObject()
+    ,QGraphicsPixmapItem(parent)
 {
-    setRect(0,0, 10, 50);
+    //draw bullet
+    QPixmap bulletImage = QPixmap(":/images/images/bullet.png").scaled(QSize(20, 20));
+    setPixmap(bulletImage);
 
-    QTimer* timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(move()));
-    timer->start(50);
+    m_timer = new QTimer();
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(move()));
+    m_timer->start(50);
 }
 
 void Bullet::move()
@@ -38,8 +41,13 @@ void Bullet::move()
     }
     //movement of bullet
     setPos(x(), y() - 10);
-    if(y() + rect().height() <= 0) {
+    if(y() + 20 <= 0) {
         scene()->removeItem(this);
         delete this;
     }
+}
+
+void Bullet::stop()
+{
+    m_timer->stop();
 }

@@ -2,17 +2,22 @@
 #define ENEMY_H
 
 #include <QObject>
-#include <QGraphicsRectItem>
-#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QTimer>
 
-class Enemy : public QObject, public QGraphicsRectItem
+class Enemy : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    Enemy();
+    Enemy(QGraphicsPixmapItem* parent = nullptr);
 
 public slots:
     void move();
+
+    void stop();
+
+private:
+    QTimer* m_timer;
 
 };
 

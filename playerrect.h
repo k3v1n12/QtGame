@@ -1,19 +1,21 @@
 #ifndef PLAYERRECT_H
 #define PLAYERRECT_H
 
-#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
-class PlayerRect : public QGraphicsRectItem
+class PlayerRect : public QGraphicsPixmapItem
 {
 public:
-    PlayerRect();
+    PlayerRect(QGraphicsItem* parent = nullptr);
     void keyPressEvent(QKeyEvent* keyEvent);
 
+    void stop();
 private:
     QMediaPlayer* m_MediaPlayer;
     QAudioOutput* m_AudioOutput;
+    bool m_playerReady;
 };
 
 #endif // PLAYERRECT_H

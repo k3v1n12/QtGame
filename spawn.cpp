@@ -2,14 +2,20 @@
 #include <QTimer>
 #include "enemy.h"
 
-Spawn::Spawn()
+Spawn::Spawn(QObject* parent)
+    : QObject(parent)
 {
-    QTimer* timer = new QTimer();
-    connect(timer, SIGNAL(timeout()), this, SLOT(spawn()));
-    timer->start(2000);
+    m_timer = new QTimer();
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(spawn()));
+    m_timer->start(2000);
     std::random_device rd;
     m_randomEngine.seed(rd());
 
+}
+
+void Spawn::stop()
+{
+    m_timer->stop();
 }
 
 void Spawn::spawn()

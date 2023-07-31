@@ -1,33 +1,36 @@
 #include "game.h"
-#include <QMediaPlayer>
-#include <QAudioOutput>
+#include "bullet.h"
+#include "enemy.h"
+#include "playerrect.h"
+#include "spawn.h"
 
 Game::Game()
 {
     //Create a scene
     scene = new QGraphicsScene();
+    scene->setSceneRect(0, 0, 800, 600);
+
+    //create a view to visualise the scene
+    view = new QGraphicsView(scene);
+    view->setBackgroundBrush(QBrush(QImage(":/images/images/background.jpg")));
+    view->setFixedSize(800, 600);
+
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //Create a player to add to the scene
     player = new PlayerRect();
 
-    //configure item
-    player->setRect(0, 0, 100, 100);
+    //draw player
+    QPixmap playerImage = QPixmap(":/images/images/player.png").scaled(QSize(100, 100));
+    player->setPixmap(playerImage);
 
+    player->setPos(view->width() / 2 - 50, view->height() - 100);
     //add player to scene
     scene->addItem(player);
 
     player->setFlag(QGraphicsItem::ItemIsFocusable);
     player->setFocus();
-
-    //create a view to visualise the scene
-    view = new QGraphicsView(scene);
-    view->setFixedSize(800, 600);
-    scene->setSceneRect(0, 0, 800, 600);
-
-    player->setPos(view->width() / 2 - player->rect().width() / 2, view->height() - player->rect().height());
-
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //spawn Enemy
     spawn = new Spawn();
@@ -42,12 +45,12 @@ Game::Game()
     scene->addItem(health);
 
     //play background music
-    QMediaPlayer* mediaPlayer = new QMediaPlayer();
-    QAudioOutput* audioOutput = new QAudioOutput;
-    mediaPlayer->setAudioOutput(audioOutput);
-    mediaPlayer->setSource(QUrl::fromLocalFile("D:\\qtproject\\QtGame\\sounds\\background.mp3"));
-    audioOutput->setVolume(10);
-    mediaPlayer->play();
+    m_MediaPlayer = new QMediaPlayer();
+    m_AudioOutput = new QAudioOutput;
+    m_MediaPlayer->setAudioOutput(m_AudioOutput);
+    m_MediaPlayer->setSource(QUrl("qrc:/sounds/sounds/background.mp3"));
+    m_AudioOutput->setVolume(10);
+    m_MediaPlayer->play();
     //show view
     view->show();
 }
@@ -60,4 +63,30 @@ Game::~Game()
     delete spawn;
     delete score;
     delete health;
+}
+
+void Game::stop()
+{
+
+    QList<QGraphicsItem *> items = scene->items();
+
+    spawn->stop();
+    m_MediaPlayer->stop();
+
+    foreach( QGraphicsItem *item, items ) {
+
+        if(auto bulletItem{dynamic_cast<Bullet*>(item)}) {
+            bulletItem->stop();
+        }
+        else if(auto enemyItem{dynamic_cast<Enemy*>(item)}) {
+            enemyItem->stop();
+        }
+        else if(auto playerItem{dynamic_cast<PlayerRect*>(item)}) {
+            playerItem->stop();
+        }
+    }
+
+    gameover = new Gameover();
+    gameover->setPos(350, 250);
+    scene->addItem(gameover);
 }
