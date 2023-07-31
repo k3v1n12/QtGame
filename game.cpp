@@ -1,4 +1,6 @@
 #include "game.h"
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 Game::Game()
 {
@@ -39,6 +41,13 @@ Game::Game()
     health->setPos(0, 25);
     scene->addItem(health);
 
+    //play background music
+    QMediaPlayer* mediaPlayer = new QMediaPlayer();
+    QAudioOutput* audioOutput = new QAudioOutput;
+    mediaPlayer->setAudioOutput(audioOutput);
+    mediaPlayer->setSource(QUrl::fromLocalFile("D:\\qtproject\\QtGame\\sounds\\background.mp3"));
+    audioOutput->setVolume(10);
+    mediaPlayer->play();
     //show view
     view->show();
 }

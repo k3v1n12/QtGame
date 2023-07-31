@@ -5,7 +5,11 @@
 
 PlayerRect::PlayerRect()
 {
-
+    m_MediaPlayer = new QMediaPlayer();
+    m_AudioOutput = new QAudioOutput;
+    m_MediaPlayer->setAudioOutput(m_AudioOutput);
+    m_MediaPlayer->setSource(QUrl::fromLocalFile("D:\\qtproject\\QtGame\\sounds\\bullet.mp3"));
+    m_AudioOutput->setVolume(10);
 }
 
 void PlayerRect::keyPressEvent(QKeyEvent *keyEvent)
@@ -24,5 +28,13 @@ void PlayerRect::keyPressEvent(QKeyEvent *keyEvent)
         Bullet* bullet = new Bullet();
         scene()->addItem(bullet);
         bullet->setPos(x() + rect().width() / 2 - bullet->rect().width(), y() - bullet->rect().height());
+
+        //play bullet sound
+        if(m_MediaPlayer->isPlaying()) {
+            m_MediaPlayer->setPosition(0);
+        }
+        if(m_MediaPlayer->playbackState() == QMediaPlayer::StoppedState) {
+            m_MediaPlayer->play();
+        }
     }
 }
